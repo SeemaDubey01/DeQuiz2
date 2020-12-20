@@ -1,4 +1,4 @@
- package com.dequiz.DeQuiz;
+ package com.dequiz.DeQuiz.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,12 +30,11 @@ import com.dequiz.DeQuiz.dto.DeQuizLogin;
 import com.dequiz.DeQuiz.dto.DeQuizMaster;
 import com.dequiz.DeQuiz.repo.DeQuizLoginDBRepo;
 import com.dequiz.DeQuiz.repo.DeQuizMasterDBRepo;
-import com.dequiz.DeQuiz.service.EmailConfig;
 
 
 @Controller
 @SessionAttributes({"deQuizLogin","existingDistinctQuizlist"})
-public class DeQuizAdminController {
+public class AdminController {
 	
 	@Autowired
 	private DeQuizLoginDBRepo deQuizLoginDBRepo;
@@ -64,8 +63,6 @@ public class DeQuizAdminController {
 	
 	@PostMapping("/loginadmin")
 	public String submitForm(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, BindingResult bindingResult, Model model) {
-		System.out.println("Inside the logged in user---"+deQuizLogin.getDqlUserId());
-		System.out.println("Inside the logged in user---"+deQuizLogin.getDqlPassword());
 		if(deQuizLogin.getDqlUserId()!=null) {
 			DeQuizLogin dequizlogin = getAdmin(deQuizLogin.getDqlUserId());
 			
@@ -73,7 +70,6 @@ public class DeQuizAdminController {
 				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "User id/password is incorrect"));
 			}
 			if (dequizlogin!=null && deQuizLogin!=null && !dequizlogin.getDqlPassword().equals(deQuizLogin.getDqlPassword())) {
-				System.out.println("Inside the password check");
 				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "User id/password is incorrect"));
 			}
 		}

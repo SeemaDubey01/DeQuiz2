@@ -1,5 +1,5 @@
 package com.dequiz.DeQuiz.service;
-
+/*
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-/*
+
  * @Service("emailService") public class EmailServiceImpl implements
  * EmailService {
  * 

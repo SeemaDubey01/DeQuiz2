@@ -11,49 +11,7 @@
 <link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
  
 <script type="text/javascript">
-<!--	var remainingSec = 5;
-	var marks = 1000;
-	var dispalyQuestion = "Y";
-	$("#msg").text (remainingSec);
-	var timerId = setInterval(function(){
-		$("#timer").text (remainingSec);
-		remainingSec = remainingSec - 1;
-		if (remainingSec < 0 ) {
-			if (dispalyQuestion == "Y" ){
-				dispalyQuestion = "N";
-//show options
-				remainingSec = ${deQuizMaster.deqmTimer};
-		//		remainingSec = 100;
-				marks = remainingSec * 100;		
-				$("#quizdiv").show();
-				$("#timertable").show();
-				$("#messagetable").hide();
-		//		clearInterval(timerId);
-			} else {
-//submit the form
-				remainingSec = 0;
-				$("#quizform").submit();
-			}
-		}		
-		setInterval(function(){
-			marks = marks - 1;
-			if (marks < 0 ) marks =0;
-			$("#tmarks").text (marks);	
-			$("#dquMarks").attr("value",marks);
-//			console.log("time: " + remainingSec + " marks: " + marks);
-		},100);
-//		clearInterval(timerId);	
-/*		setTimeout(function calculateMarks(){
-			marks = marks - 1;
-			if (marks < 0 ) marks =0;
-			$("#tmarks").text (marks);	
-			$("#dquMarks").attr("value",marks);
-			setTimeout(calculateMarks,100);
-//			console.log("time: " + remainingSec + " marks: " + marks);
-		},100);*/
-		//console.log("time11: " + remainingSec + " marks: " + marks);
-	},1000);
- -->
+
 $(document).ready(function(){
   $("#quizdiv").hide();
   $("#timertable").hide();
@@ -81,7 +39,7 @@ $(document).ready(function(){
 <div class="wrapper">
 <!--  page header containing heading and menu -->
 <div align="center">
-  <span ><img src="images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
+  <span ><img src="/images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
   </span> <span class="header">De Quiz</span>
 </div>
 <!--  end of page header -->
@@ -91,7 +49,7 @@ $(document).ready(function(){
 <h3>the logged in  user is ${sessionScope.deQuizLogin.dqlUserId}</h3>
 <div align="center" style="font-size:min(5vw,40);">
 <!--  question number and question -->
-<form:form id="quizform" action="/getNextQuestioin"  method="post" modelAttribute="deQuizMaster">
+<form:form id="quizform" action="getNextQuestioin"  method="post" modelAttribute="deQuizMaster">
   <div>${deQuizMaster.deqmQuestionNo}.  ${deQuizMaster.deqmQuestion}</div>
   
   <form:hidden path="deqmQuizId" value="${deQuizMaster.deqmQuizId}"/>
@@ -104,7 +62,7 @@ $(document).ready(function(){
   <form:hidden path="deqmOption_d" value="${deQuizMaster.deqmOption_d}"/>
   <form:hidden path="dquMarks" value="0"/>
     <form:hidden path="selectedAnswer" value="x"/>
-  <div id="quizdiv" class="quizdiv">
+  <div id="quizdiv1" class="quizdiv">
   <p id="optionA">
   <form:label path="deqmOption_a">${deQuizMaster.deqmOption_a}</form:label>
   </p>

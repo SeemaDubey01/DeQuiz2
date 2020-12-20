@@ -1,4 +1,4 @@
-package com.dequiz.DeQuiz;
+package com.dequiz.DeQuiz.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dequiz.DeQuiz.Websocket.WebSocketDAO;
@@ -26,7 +27,8 @@ import com.dequiz.DeQuiz.repo.DeQuizUserDBRepo;
 
 @Controller
 @SessionAttributes({"deQuizLogin","existingDistinctQuizlist"})
-public class DeQuizQMController {
+@RequestMapping("/QuizMaster")
+public class QuizMasterController {
 	@Autowired
 	DeQuizMasterDBRepo dequizMasterrepo;
 	
@@ -38,32 +40,26 @@ public class DeQuizQMController {
 	
 	@PostMapping("/createquizHeader")
 	private String createQuizHeader(@ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, Model model, HttpSession session) {
-		System.out.println("The value of selected button is22222222222222222222222 ----"+deQuizLogin.getDqlOperationType());
 		String returntype = "";
 		String operationType = deQuizLogin.getDqlOperationType();
 		if(operationType.equalsIgnoreCase("create")) {
-		DeQuizMaster deQuizMaster = new DeQuizMaster();
-		Random random = new Random();
-		int quizId = 100+random.nextInt(999-100);
-		deQuizMaster.setDeqmQuizId(quizId);
-		deQuizMaster.setDqlUserId(deQuizLogin.getDqlUserId());
-		System.out.println("the object which comes here in master is"+deQuizMaster.getDqlUserId());
-		model.addAttribute("deQuizMaster", deQuizMaster);
-		returntype ="createquizHeader";
+			DeQuizMaster deQuizMaster = new DeQuizMaster();
+			Random random = new Random();
+			int quizId = 100+random.nextInt(999-100);
+			deQuizMaster.setDeqmQuizId(quizId);
+			deQuizMaster.setDqlUserId(deQuizLogin.getDqlUserId());
+			model.addAttribute("deQuizMaster", deQuizMaster);
+			returntype ="createquizHeader";
 		}
 		if(operationType.equalsIgnoreCase("addQuestion")) {
 			DeQuizMaster deQuizMaster = new DeQuizMaster ();
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
 			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			long count = deQuizMasterList.stream().count();
-			System.out.println("count of the list is-----------------"+count);
-			System.out.println("Size of the list is------------------"+deQuizMasterList.size());
 			if(deQuizMasterList.size()>10) {
 				deQuizMaster = deQuizMasterList.stream().skip(count-1).findFirst().get();
-				//deQuizMaster = deQuizMasterList.get(1);
 				model.addAttribute("operationType", operationType);
 				model.addAttribute("deQuizMaster", deQuizMaster);
-				System.out.println("The last object is--------"+deQuizMaster);
 				returntype = "viewquiz";
 			}else
 			{
@@ -74,7 +70,6 @@ public class DeQuizQMController {
 				dequizMasterrepo.save(deQuizMaster);
 				deQuizMaster.nextQustionNo();
 
-				System.out.println("outside create status: " + deQuizMaster);
 				model.addAttribute("deQuizMaster", deQuizMaster);
 				returntype = "createquizstatus";
 			}
@@ -98,7 +93,6 @@ public class DeQuizQMController {
 			returntype = "editquiz";
 		}
 		if(operationType.equalsIgnoreCase("editNew")) {
-			DeQuizMaster deQuizMaster = new DeQuizMaster ();
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
 			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			model.addAttribute("deQuizMasterList", deQuizMasterList);
@@ -130,12 +124,8 @@ public class DeQuizQMController {
 		
 	}
 	
-	
-	
 	@PostMapping("/createquizDetail")
 	private String postQuizHeader(@ModelAttribute("deQuizMaster") DeQuizMaster deQuizMaster, Model model) {
-		System.out.println("The admi created the quiz is---"+deQuizMaster.getDqlUserId());
-		System.out.println("The quiz id22222222222 of the quiz is"+deQuizMaster.getDeqmQuizId());
 		deQuizMaster.setDeqmSrNbr(deQuizMaster.getDeqmQuizId()*100);
 		deQuizMaster.setDeqmQuestion("Its quiz header for all the quiz created");
 		deQuizMaster.setDeqmOption_a("X");
@@ -175,7 +165,6 @@ public class DeQuizQMController {
 		dequizMasterrepo.save(deQuizMaster);
 		deQuizMaster.nextQustionNo();
 
-		System.out.println("outside create status: " + deQuizMaster);
 		model.addAttribute("deQuizMaster", deQuizMaster);
 		return "createquizstatus";
 	}
@@ -186,16 +175,15 @@ public class DeQuizQMController {
 	
 		Optional<DeQuizMaster> deQuizMasterMap = dequizMasterrepo.findById(quizId);
 		if (!deQuizMasterMap.isPresent()){
-			
 			return "adminregisterok";
 		}
 		
-	
 		deQuizMaster = deQuizMasterMap.get();
 		model.addAttribute("deQuizMaster",deQuizMaster);
 	
 		return "viewquiz";
 	}
+	
 	@PostMapping("/getNextQuestioinEdit")
 	private String getNextQuestionEdit(@ModelAttribute("deQuizMaster") DeQuizMaster deQuizMaster, Model model) {
 		if(deQuizMaster.getEditType().equalsIgnoreCase("next")) {
@@ -232,9 +220,7 @@ public class DeQuizQMController {
 	
 	@GetMapping("/getUserQuizList")
 	private String getUserQuizList(Model model) {
-	
-			return "adminregisterok";
-		
+		return "adminregisterok";
 	}
 
 }

@@ -10,9 +10,9 @@
 <meta name="keywords" content="Online Quiz, Online tests, dequiz, Indian quiz, entertainment, group activity">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Online Quiz for Everyone - DeQuiz</title>
-<link href="CSS/dequiz.css" rel="stylesheet" type="text/css" />
+<link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
-<script src="script/dequiz.js"></script>
+<script src="/script/dequiz.js"></script>
 <script type="text/javascript">
 
 function clickedit(){
@@ -114,18 +114,18 @@ function clickresetResult(){
 <div class="wrapper">
 <!--  page header containing heading and menu -->
 <div align="center">
-  <span ><img src="images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
+  <span ><img src="/images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
   </span> <span class="header">De Quiz</span>
 
 <!--  page header containg heading and menu -->
 <div class="menu-container">
 <table >
   <tr>
-    <td><a href="index.html" target="_top" onclick="MM_nbGroup('down','group1','Home','images/home_clicked.jpg',1)" onmouseover="MM_nbGroup('over','Home','images/home_clicked.jpg','images/home_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="images/home.jpg" alt="Home" name="Home" class="menuitem" id="Home" onload="" /></a></td>
-    <td><a href="aboutus.html" target="_top" onclick="MM_nbGroup('down','group1','AboutUs','images/aboutus_clicked.jpg',1)" onmouseover="MM_nbGroup('over','AboutUs','images/aboutus_hover.jpg','images/aboutus_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="images/aboutus.jpg" alt="About Us" name="AboutUs" class="menuitem" id="AboutUs" onload="" /></a></td>
-    <td><a href="joinQuiz" target="_top" onclick="MM_nbGroup('down','group1','JoinQuiz','images/joinquiz_clicked.jpg',1)" onmouseover="MM_nbGroup('over','JoinQuiz','images/joinquiz_hover.jpg','images/joinquiz_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="images/joinquiz.jpg" alt="Join Quiz" name="JoinQuiz" class="menuitem" id="JoinQuiz" onload="" /></a></td>
-    <td><a href="contactus.html" target="_top" onclick="MM_nbGroup('down','group1','ContactUs','images/contactus_clicked.jpg',1)" onmouseover="MM_nbGroup('over','ContactUs','images/contactus_hover.jpg','images/contactus_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="images/contactus.jpg" alt="Contact Us" name="ContactUs" class="menuitem" id="ContactUs" onload="" /></a></td>
-    <td><a href="adminlogin" target="_top" onclick="MM_nbGroup('down','group1','LogIn','images/login_clicked.jpg',1)" onmouseover="MM_nbGroup('over','LogIn','images/login_hover.jpg','images/login_hover.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="images/login_clicked.jpg" alt="Log in" name="LogIn" class="menuitem" id="LogIn" onload="" /></a></td>
+    <td><a href="index.html" target="_top" onclick="MM_nbGroup('down','group1','Home','/images/home_clicked.jpg',1)" onmouseover="MM_nbGroup('over','Home','/images/home_clicked.jpg','/images/home_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="/images/home.jpg" alt="Home" name="Home" class="menuitem" id="Home" onload="" /></a></td>
+    <td><a href="aboutus.html" target="_top" onclick="MM_nbGroup('down','group1','AboutUs','/images/aboutus_clicked.jpg',1)" onmouseover="MM_nbGroup('over','AboutUs','/images/aboutus_hover.jpg','/images/aboutus_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="/images/aboutus.jpg" alt="About Us" name="AboutUs" class="menuitem" id="AboutUs" onload="" /></a></td>
+    <td><a href="joinQuiz" target="_top" onclick="MM_nbGroup('down','group1','JoinQuiz','/images/joinquiz_clicked.jpg',1)" onmouseover="MM_nbGroup('over','JoinQuiz','/images/joinquiz_hover.jpg','/images/joinquiz_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="/images/joinquiz.jpg" alt="Join Quiz" name="JoinQuiz" class="menuitem" id="JoinQuiz" onload="" /></a></td>
+    <td><a href="contactus.html" target="_top" onclick="MM_nbGroup('down','group1','ContactUs','/images/contactus_clicked.jpg',1)" onmouseover="MM_nbGroup('over','ContactUs','/images/contactus_hover.jpg','images/contactus_clicked.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="/images/contactus.jpg" alt="Contact Us" name="ContactUs" class="menuitem" id="ContactUs" onload="" /></a></td>
+    <td><a href="adminlogin" target="_top" onclick="MM_nbGroup('down','group1','LogIn','/images/login_clicked.jpg',1)" onmouseover="MM_nbGroup('over','LogIn','/images/login_hover.jpg','/images/login_hover.jpg',1)" onmouseout="MM_nbGroup('out')"><img src="/images/login_clicked.jpg" alt="Log in" name="LogIn" class="menuitem" id="LogIn" onload="" /></a></td>
   </tr>
 </table>
 </div></div>
@@ -134,7 +134,7 @@ function clickresetResult(){
 <div class="content-window">
 <H2>Registration Status <span></span></H2>
 <div align="center" style="font-size:min(5vw,40);">
-<form:form action="/createquizHeader" method= "post" id="quizform" modelAttribute="deQuizLogin">
+<form:form action="/QuizMaster/createquizHeader" method= "post" id="quizform" modelAttribute="deQuizLogin">
 <form:hidden path="dqlUserId" value ="${deQuizLogin.dqlUserId}"/>
 
 <form:hidden path="dqlOperationType" value ="create" />
@@ -145,7 +145,7 @@ function clickresetResult(){
     <button name="view" type="button" value="view" onclick="clickview()">View Quiz</button>
     <button name="edit" type="button" value="edit" onclick="clickedit()">Edit Quiz</button>
     <button name="start" type="button" value="start" onclick="clickstart()">Start Quiz</button>
-    <button name ="delete" type="button" value ="delete" onclick="clickdelete()">Delete Quiz</button></p>
+    <button name ="delete" type="button" value ="delete" onclick="clickdelete()">Delete Quiz</button>
     <button name ="resetResult" type="button" value ="resetResult" onclick="clickresetResult()">Reset Result</button>
     
     <div id="errormessage" class="error"></div>
