@@ -9,22 +9,11 @@
 <title>JoinQuiz</title>
 <meta name="description" content="Online quiz for variety of topics to enhance your knowledge. Gives a platform to play along with your fiends and families. Create your own quiz or join quiz.">
 <meta name="keywords" content="Online Quiz, Online tests, dequiz, Indian quiz, entertainment, group activity">
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-171638931-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171638931-1');
-</script>
 <link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/script/dequiz.js"></script>
 </head>
 <body>
-<div class="wrapper">
-<!--  page header containg heading and menu -->
 <div id="headerpage"></div>
 <!-- main content -->
 <div class="content-window">
@@ -52,8 +41,5 @@
 <!--  Footer -->
 <div id="footerpage" class="footer"></div>
 <!--  end of Footer -->
-
-</div>
-
 </body>
 </html>

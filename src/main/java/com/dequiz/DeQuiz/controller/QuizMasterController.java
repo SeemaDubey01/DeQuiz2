@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.dequiz.DeQuiz.Websocket.WebSocketDAO;
 import com.dequiz.DeQuiz.dto.DeQuizLogin;
 import com.dequiz.DeQuiz.dto.DeQuizMaster;
+import com.dequiz.DeQuiz.repo.DeQuizLoginDBRepo;
 import com.dequiz.DeQuiz.repo.DeQuizMasterDBRepo;
 import com.dequiz.DeQuiz.repo.DeQuizUserDBRepo;
 
@@ -30,14 +32,42 @@ import com.dequiz.DeQuiz.repo.DeQuizUserDBRepo;
 @RequestMapping("/QuizMaster")
 public class QuizMasterController {
 	@Autowired
-	DeQuizMasterDBRepo dequizMasterrepo;
+	DeQuizMasterDBRepo deQuizMasterDBRepo;
 	
 	@Autowired
 	DeQuizUserDBRepo deQuizUserDBRepo;
 	
 	@Autowired
+	DeQuizLoginDBRepo deQuizLoginDBRepo;
+	
+	@Autowired
 	WebSocketDAO wsMessageDAO;
 	
+	@GetMapping("/login")
+	public String loginPage() {
+		System.out.println("going to login page");
+		return("adminLogin");
+	}
+	
+	@GetMapping("/adminlogin")
+	private String showForm(Authentication authentication, Model model) {
+	System.out.println("admin login page of Quiz Master controller");
+		Optional<DeQuizLogin> deQuizLogin = deQuizLoginDBRepo.findById(authentication.getName());
+		
+		List<DeQuizMaster> existingQuizlist = new ArrayList<DeQuizMaster>();
+		List<DeQuizMaster> existingDistinctQuizlist = new ArrayList<DeQuizMaster>();
+		
+		existingQuizlist=deQuizMasterDBRepo.findByDqlUserId(authentication.getName());
+		existingDistinctQuizlist = io.vavr.collection.List.ofAll(existingQuizlist)
+					  .distinctBy(DeQuizMaster::getDeqmQuizId)
+					  .toJavaList();
+		
+		model.addAttribute("existingQuizlist", existingQuizlist);
+		model.addAttribute("existingDistinctQuizlist", existingDistinctQuizlist);
+		model.addAttribute("deQuizLogin", deQuizLogin.get());
+		return "adminregisterok";
+	}
+
 	@PostMapping("/createquizHeader")
 	private String createQuizHeader(@ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, Model model, HttpSession session) {
 		String returntype = "";
@@ -54,7 +84,7 @@ public class QuizMasterController {
 		if(operationType.equalsIgnoreCase("addQuestion")) {
 			DeQuizMaster deQuizMaster = new DeQuizMaster ();
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
-			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
+			deQuizMasterList = deQuizMasterDBRepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			long count = deQuizMasterList.stream().count();
 			if(deQuizMasterList.size()>10) {
 				deQuizMaster = deQuizMasterList.stream().skip(count-1).findFirst().get();
@@ -67,7 +97,7 @@ public class QuizMasterController {
 				Integer quizSrNo = deQuizMaster.getDeqmQuizId() * 100 + deQuizMaster.getDeqmQuestionNo();
 				
 				deQuizMaster.setDeqmSrNbr(quizSrNo);
-				dequizMasterrepo.save(deQuizMaster);
+				deQuizMasterDBRepo.save(deQuizMaster);
 				deQuizMaster.nextQustionNo();
 
 				model.addAttribute("deQuizMaster", deQuizMaster);
@@ -77,7 +107,7 @@ public class QuizMasterController {
 		if(operationType.equalsIgnoreCase("view")) {
 			DeQuizMaster deQuizMaster = new DeQuizMaster ();
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
-			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
+			deQuizMasterList = deQuizMasterDBRepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			deQuizMaster = deQuizMasterList.get(1);
 			model.addAttribute("operationType", operationType);
 			model.addAttribute("deQuizMaster", deQuizMaster);
@@ -86,7 +116,7 @@ public class QuizMasterController {
 		if(operationType.equalsIgnoreCase("edit")) {
 			DeQuizMaster deQuizMaster = new DeQuizMaster ();
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
-			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
+			deQuizMasterList = deQuizMasterDBRepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			deQuizMaster = deQuizMasterList.get(1);
 			model.addAttribute("operationType", operationType);
 			model.addAttribute("deQuizMaster", deQuizMaster);
@@ -94,7 +124,7 @@ public class QuizMasterController {
 		}
 		if(operationType.equalsIgnoreCase("editNew")) {
 			List<DeQuizMaster> deQuizMasterList = new ArrayList<DeQuizMaster>();
-			deQuizMasterList = dequizMasterrepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
+			deQuizMasterList = deQuizMasterDBRepo.findByDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			model.addAttribute("deQuizMasterList", deQuizMasterList);
 			returntype = "editquizNew";
 		}
@@ -109,7 +139,7 @@ public class QuizMasterController {
 		if(operationType.equalsIgnoreCase("delete")) {
 			Integer id = deQuizLogin.getDeqmQuizId();
 			model.addAttribute("quizId", id);
-			dequizMasterrepo.deleteByDeqmQuizId(id);
+			deQuizMasterDBRepo.deleteByDeqmQuizId(id);
 			
 			returntype = "adminregisterok"; 
 		}
@@ -136,7 +166,7 @@ public class QuizMasterController {
 		deQuizMaster.setDeqmQuestionNo(00);
 		deQuizMaster.setDquMarks(00);
 		
-		dequizMasterrepo.save(deQuizMaster);
+		deQuizMasterDBRepo.save(deQuizMaster);
 		model.addAttribute("quizmaster", deQuizMaster);
 		return "createquizDetail";
 	}
@@ -162,7 +192,7 @@ public class QuizMasterController {
 		Integer quizSrNo = deQuizMaster.getDeqmQuizId() * 100 + deQuizMaster.getDeqmQuestionNo();
 		
 		deQuizMaster.setDeqmSrNbr(quizSrNo);
-		dequizMasterrepo.save(deQuizMaster);
+		deQuizMasterDBRepo.save(deQuizMaster);
 		deQuizMaster.nextQustionNo();
 
 		model.addAttribute("deQuizMaster", deQuizMaster);
@@ -173,7 +203,7 @@ public class QuizMasterController {
 	private String getNextQuestion(@ModelAttribute("deQuizMaster") DeQuizMaster deQuizMaster, Model model,HttpSession session) {
 		Integer quizId = deQuizMaster.getDeqmQuizId() * 100 + deQuizMaster.getDeqmQuestionNo() + 1;
 	
-		Optional<DeQuizMaster> deQuizMasterMap = dequizMasterrepo.findById(quizId);
+		Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterDBRepo.findById(quizId);
 		if (!deQuizMasterMap.isPresent()){
 			return "adminregisterok";
 		}
@@ -188,7 +218,7 @@ public class QuizMasterController {
 	private String getNextQuestionEdit(@ModelAttribute("deQuizMaster") DeQuizMaster deQuizMaster, Model model) {
 		if(deQuizMaster.getEditType().equalsIgnoreCase("next")) {
 		Integer quizId = deQuizMaster.getDeqmQuizId() * 100 + deQuizMaster.getDeqmQuestionNo() + 1;
-		Optional<DeQuizMaster> deQuizMasterMap = dequizMasterrepo.findById(quizId);
+		Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterDBRepo.findById(quizId);
 		if (!deQuizMasterMap.isPresent()){
 			return "adminregisterok";
 		}
@@ -200,13 +230,13 @@ public class QuizMasterController {
 		if(deQuizMaster.getEditType().equalsIgnoreCase("save")) {
 			System.out.println("The id of the question is----"+deQuizMaster.getDeqmSrNbr());
 			System.out.println("Values inside object"+deQuizMaster.getDeqmOption_c()+" And option d is"+deQuizMaster.getDeqmOption_d());
-			dequizMasterrepo.save(deQuizMaster);
+			deQuizMasterDBRepo.save(deQuizMaster);
 			model.addAttribute("deQuizMaster", deQuizMaster);
 			return "editquiz";
 		}
 		if(deQuizMaster.getEditType().equalsIgnoreCase("previous")){
 			Integer quizId = deQuizMaster.getDeqmQuizId() * 100 + deQuizMaster.getDeqmQuestionNo() - 1;
-			Optional<DeQuizMaster> deQuizMasterMap = dequizMasterrepo.findById(quizId);
+			Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterDBRepo.findById(quizId);
 			if (!deQuizMasterMap.isPresent()){
 				return "allQuestions";
 			}

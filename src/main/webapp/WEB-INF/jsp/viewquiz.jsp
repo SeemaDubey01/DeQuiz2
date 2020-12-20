@@ -36,17 +36,14 @@ $(document).ready(function(){
 <title>DeQuiz: Start Quiz</title>
 </head>
 <body>
-<div class="wrapper">
-<!--  page header containing heading and menu -->
-<div align="center">
-  <span ><img src="/images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
-  </span> <span class="header">De Quiz</span>
-</div>
+<div id="headerpage"></div>
 <!--  end of page header -->
 <!--  content block -->
 <div class="content-window">
-<h1>Start Quiz</h1>
-<h3>the logged in  user is ${sessionScope.deQuizLogin.dqlUserId}</h3>
+<H2>Welcome ${deQuizLogin.dqlUserId}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<span style="background-color: lightblue; font-size:20px; text-align:right">
+	<a href="/logout" style="text-decoration:none;color:red; ">Log Out</a></span></H2>
+<h1>View Quiz</h1>
 <div align="center" style="font-size:min(5vw,40);">
 <!--  question number and question -->
 <form:form id="quizform" action="getNextQuestioin"  method="post" modelAttribute="deQuizMaster">
@@ -87,12 +84,7 @@ $(document).ready(function(){
 </div>
 <!--  End of content block -->
 <!--  Footer -->
-<div class="footer">
-&copy; DeQuiz India 
-</div>
+<div id="footerpage"></div>
 <!--  end of Footer -->
-
-</div>
-
 </body>
 </html>

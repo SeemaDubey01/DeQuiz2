@@ -1,21 +1,10 @@
  package com.dequiz.DeQuiz.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.dequiz.DeQuiz.dto.DeQuizLogin;
 import com.dequiz.DeQuiz.dto.DeQuizMaster;
 import com.dequiz.DeQuiz.repo.DeQuizLoginDBRepo;
@@ -42,25 +30,16 @@ public class AdminController {
 	@Autowired
 	private DeQuizMasterDBRepo deQuizMasterDBRepo;
 	
-	
-	
-	//@Autowired 
-	//private EmailService emailService;
-
-	DeQuizLogin quizLogin;
-	@RequestMapping("/admin")
-	private String admin() {
-		System.out.println("Going admin....");
-		return "admin";
-	}
-	
-	@GetMapping("/adminlogin")
+	/* Display login page for QuizMaster 
+	@GetMapping("/login")
 	private String showForm(@Valid Model model) {
 		DeQuizLogin deQuizLogin = new DeQuizLogin();
+		System.out.println("inside login method for admin controller");
 		model.addAttribute("deQuizLogin", deQuizLogin);
 		return "adminLogin";
 	}
-	
+
+		
 	@PostMapping("/loginadmin")
 	public String submitForm(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, BindingResult bindingResult, Model model) {
 		if(deQuizLogin.getDqlUserId()!=null) {
@@ -91,7 +70,7 @@ public class AdminController {
 
 		}
 	}
-	
+	*/
 	@GetMapping("/signUpNew")
 	private String showSignUpForm(Model model) {
 		System.out.println("Inside the get method--rtertertrt-");
@@ -125,6 +104,7 @@ public class AdminController {
 	
 	 private DeQuizLogin getAdmin(String userIdfield){
 		  Optional<DeQuizLogin> dequizLoginMap =deQuizLoginDBRepo.findById(userIdfield); 
+		  DeQuizLogin quizLogin = new DeQuizLogin();
 		  if(dequizLoginMap.isPresent()) { 
 			  quizLogin = dequizLoginMap.get();
 		  } 
