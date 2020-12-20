@@ -1,0 +1,64 @@
+@charset "ISO-8859-1";
+body {
+	background-color:#D0DEE6;
+	color:#000099;
+	min-width:300px;
+}
+
+
+.header {font-size: 60px;color:#000099;}
+.wrapper{
+	display: grid;
+}
+.wrapper > div{
+	border:1px solid black;
+	margin: 5px;
+	padding: 5px;
+}
+.mentu-container {
+	min-width:300px;
+	padding:5px;
+}
+.menuitem {
+	width:16vw;
+	min-width:40px;
+	hight: auto;
+}
+.menuimage {
+	max-width:20%;
+	border:1px solid black;
+	cell-spacing:0;	
+}
+.footer{
+	width:device-width;
+	color:#D0DEE6;
+	background-color:#000099;
+	text-align:right;
+	
+}
+.error {
+	color: red;
+	font-style: italic;
+}
+.quizdiv {
+	margin-left: 80px;
+	margin-right: 80px;
+}
+.quizdiv > p {
+	border: 1px solid black;
+	color: white;
+	background-color: blue;
+}
+.quizdiv > div {
+	border: 1px solid black;
+	color: white;
+	background-color: blue;
+}
+.rankingDiv >  table {
+	border-collapse: collapse;
+}
+.rankingDiv >  table td {
+	border: 1px solid black;
+	padding: 5px;
+	text-align: center;
+}
