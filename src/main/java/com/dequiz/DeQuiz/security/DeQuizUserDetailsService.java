@@ -21,7 +21,7 @@ public class DeQuizUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		System.out.println("loading user by username");
 		Optional<DeQuizLogin> deQuizLoginMap = deQuizLoginDBRepo.findById(username);
-		if(deQuizLoginMap.isEmpty()){
+		if(!deQuizLoginMap.isPresent()){
 			throw new UsernameNotFoundException("user not found: " + username);
 		}
 		return new DeQuizUserDetails(deQuizLoginMap.get());

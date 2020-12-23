@@ -30,60 +30,20 @@ public class AdminController {
 	@Autowired
 	private DeQuizMasterDBRepo deQuizMasterDBRepo;
 	
-	/* Display login page for QuizMaster 
-	@GetMapping("/login")
-	private String showForm(@Valid Model model) {
-		DeQuizLogin deQuizLogin = new DeQuizLogin();
-		System.out.println("inside login method for admin controller");
-		model.addAttribute("deQuizLogin", deQuizLogin);
-		return "adminLogin";
-	}
-
-		
-	@PostMapping("/loginadmin")
-	public String submitForm(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, BindingResult bindingResult, Model model) {
-		if(deQuizLogin.getDqlUserId()!=null) {
-			DeQuizLogin dequizlogin = getAdmin(deQuizLogin.getDqlUserId());
-			
-			if (dequizlogin==null) {
-				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "User id/password is incorrect"));
-			}
-			if (dequizlogin!=null && deQuizLogin!=null && !dequizlogin.getDqlPassword().equals(deQuizLogin.getDqlPassword())) {
-				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "User id/password is incorrect"));
-			}
-		}
-		if (bindingResult.hasErrors()) {
-			return "adminLogin";
-		} else {
-			List<DeQuizMaster> existingQuizlist = new ArrayList<DeQuizMaster>();
-			List<DeQuizMaster> existingDistinctQuizlist = new ArrayList<DeQuizMaster>();
-			if(deQuizLogin!=null && deQuizLogin.getDqlUserId()!=null) {
-				existingQuizlist=getExistingQuizes(deQuizLogin.getDqlUserId());
-				existingDistinctQuizlist = io.vavr.collection.List.ofAll(existingQuizlist)
-						  .distinctBy(DeQuizMaster::getDeqmQuizId)
-						  .toJavaList();
-			}
-			model.addAttribute("existingQuizlist", existingQuizlist);
-			model.addAttribute("existingDistinctQuizlist", existingDistinctQuizlist);
-			model.addAttribute("deQuizLogin", deQuizLogin);
-			return "adminregisterok";
-
-		}
-	}
-	*/
-	@GetMapping("/signUpNew")
+	@GetMapping("/signUp")
 	private String showSignUpForm(Model model) {
 		System.out.println("Inside the get method--rtertertrt-");
 		DeQuizLogin deQuizLogin = new DeQuizLogin();
 		model.addAttribute("deQuizLogin", deQuizLogin);
-		return "adminSignUp";
+		return "signUp";
 	}
 	
 	@PostMapping("/saveAdmin")
-	public String saveAdmin(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLogin, BindingResult bindingResult, Model model) {
-		if(deQuizLogin.getDqlUserId()!=null) {
-			DeQuizLogin dequizlogin = getAdmin(deQuizLogin.getDqlUserId());;
-			if (dequizlogin!=null && dequizlogin.getDqlUserId().equalsIgnoreCase(deQuizLogin.getDqlUserId())) {
+	public String saveAdmin(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLoginPara, BindingResult bindingResult, Model model) {
+		System.out.println("saveAdmin: user is: " + deQuizLoginPara);
+		if(deQuizLoginPara.getDqlUserId()!=null) {
+			DeQuizLogin deQuizLogin = getAdmin(deQuizLoginPara.getDqlUserId());;
+			if (deQuizLogin!=null && deQuizLogin.getDqlUserId().equalsIgnoreCase(deQuizLoginPara.getDqlUserId())) {
 				System.out.println("userid exists");
 				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "UserId already exists please select a new userId"));
 			}
@@ -94,9 +54,9 @@ public class AdminController {
 		} 
 	
 		else {
-			model.addAttribute("deQuizLogin", deQuizLogin);
-			model.addAttribute("dqlUserId",deQuizLogin.getDqlUserId());
-			deQuizLoginDBRepo.save(deQuizLogin);
+			model.addAttribute("deQuizLogin", deQuizLoginPara);
+			model.addAttribute("dqlUserId",deQuizLoginPara.getDqlUserId());
+			deQuizLoginDBRepo.save(deQuizLoginPara);
 			return "adminregisterok";
 
 		}
@@ -105,6 +65,7 @@ public class AdminController {
 	 private DeQuizLogin getAdmin(String userIdfield){
 		  Optional<DeQuizLogin> dequizLoginMap =deQuizLoginDBRepo.findById(userIdfield); 
 		  DeQuizLogin quizLogin = new DeQuizLogin();
+		  quizLogin.setDqlUserId(" ");
 		  if(dequizLoginMap.isPresent()) { 
 			  quizLogin = dequizLoginMap.get();
 		  } 

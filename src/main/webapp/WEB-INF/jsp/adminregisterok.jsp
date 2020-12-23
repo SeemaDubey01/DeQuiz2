@@ -116,10 +116,6 @@ function clickresetResult(){
 	<span style="background-color: lightblue; font-size:20px; text-align:right">
 	<a href="/logout" style="text-decoration:none;color:red; ">Log Out</a></span></H2>
 <div align="center" style="font-size:min(5vw,40);">
-<ul>
-	<li>One</li>
-	<li id='loginSec'>Two</li>
-</ul>
 <form:form action="/QuizMaster/createquizHeader" method= "post" id="quizform" modelAttribute="deQuizLogin">
 <form:hidden path="dqlUserId" value ="${deQuizLogin.dqlUserId}"/>
 
