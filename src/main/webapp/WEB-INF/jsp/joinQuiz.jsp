@@ -22,7 +22,7 @@
 	Try sample quiz - 102 or 369<p/>
 		<div id="registerform" align="center">
 		<table>
-		<form:form action="joinQuiz" method="post" modelAttribute="deQuizUser">
+		<form:form action="userInQuiz" method="get" modelAttribute="deQuizUser">
 		<tr>
 			<td><form:label path="dquQuizId">Quiz#:</form:label></td>
 			<td><form:input path="dquQuizId" type = "number" /></td>

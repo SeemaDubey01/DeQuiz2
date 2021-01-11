@@ -1,5 +1,7 @@
 package com.dequiz.DeQuiz.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,37 @@ public class JoinController {
 		return "joinQuiz";
 	}
 
+	@GetMapping("/userInQuiz")
+	public String userInQuiz(@Valid @ModelAttribute("deQuizUser") DeQuizUser deQuizUser, BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			return "joinQuiz";
+		} else {
+			System.out.println("user received: " +deQuizUser.getDquUserName());
+			// save user details in table
+			Optional<DeQuizUser> deQuizUserMap = deQuizUserRepo.findByDquQuizIdAndDquUserName(deQuizUser.getDquQuizId(), deQuizUser.getDquUserName());
+			if (deQuizUserMap.isEmpty()) {
+				deQuizUser.setDquSessionId("Q:");
+				deQuizUser.setDquAnswer("X");
+				deQuizUser.setDquMarks(0);
+				deQuizUser.setDquTotalMarks(0);
+				deQuizUser.setDquQuestionNo(0);
+				deQuizUserRepo.save(deQuizUser);
+				System.out.println("writing user name");
+			}
+			else {
+				deQuizUser = deQuizUserMap.get();
+			}
+			DeQuizMaster deQuizMaster = new DeQuizMaster ();
+			deQuizMaster.setDeqmQuizId(deQuizUser.getDquQuizId());
+			deQuizMaster.setDquUserName(deQuizUser.getDquUserName());
+			deQuizMaster.setDquUserId(deQuizUser.getDquUserId());
+			deQuizMaster.setDquUserName(deQuizUser.getDquUserName());
+			
+			model.addAttribute("deQuizMaster", deQuizMaster);
+			return "userInQuiz";
+		}
+	}
+	/*
 	@PostMapping("/joinQuiz")
 	public String submitForm(@Valid @ModelAttribute("deQuizUser") DeQuizUser deQuizUser, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -52,6 +85,6 @@ public class JoinController {
 			model.addAttribute("deQuizMaster", deQuizMaster);
 			return "userInQuiz";
 		}
-	}
+	}*/
 	
 }

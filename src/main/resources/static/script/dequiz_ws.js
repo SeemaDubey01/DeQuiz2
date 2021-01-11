@@ -56,7 +56,7 @@ function onMessageReceivedParticipantQueue (payload){
 	if (wsMessage.wsMessageType === 'ShowQuiz' &&
 			wsMessage.wsQuizId == thisQuizId ) {
 		populateQuestionDiv(wsMessage,"participant");
-		console.log("quiz: " + wsMessage.wsQuizId + " question: " + wsMessage.wsQuestionNo + " received");
+		//console.log("quiz: " + wsMessage.wsQuizId + " question: " + wsMessage.wsQuestionNo + " received");
 	} else if (wsMessage.wsMessageType === 'ShowResult' &&
 			wsMessage.wsQuizId == thisQuizId ) {
 		displayResultTable(wsMessage.wsUserList, wsMessage.wsListSize);
@@ -162,7 +162,7 @@ function selectedOption(option, marks){
 		result = "Incorrect";
 	}
 	totalMarks = totalMarks + parseInt(marks,10);
-	console.log ("option: " + option + " marks: " + marks + " timerId1: " + timerId1 + " timerId2: " + timerId2  );
+	//console.log ("option: " + option + " marks: " + marks + " timerId1: " + timerId1 + " timerId2: " + timerId2  );
 	clearInterval(timerId1);
 	clearInterval(timerId2);
 	showResultDiv(result, marks);

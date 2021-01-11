@@ -1,6 +1,7 @@
 package com.dequiz.DeQuiz.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -34,6 +35,6 @@ public interface DeQuizUserDBRepo extends JpaRepository<DeQuizUser, Integer> {
 	@Modifying
 	public void deleteByDquQuizId(Integer dquQuizId);
 	
-	
+	public Optional<DeQuizUser> findByDquQuizIdAndDquUserName(Integer dquQuizId, String dquUserName);
 
 }

@@ -51,7 +51,6 @@ public class QuizMasterController {
 	
 	@GetMapping("/adminlogin")
 	private String showForm(Authentication authentication, Model model) {
-	System.out.println("admin login page of Quiz Master controller");
 		Optional<DeQuizLogin> deQuizLogin = deQuizLoginDBRepo.findById(authentication.getName());
 		
 		List<DeQuizMaster> existingQuizlist = new ArrayList<DeQuizMaster>();

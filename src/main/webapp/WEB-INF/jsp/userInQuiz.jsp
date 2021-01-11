@@ -8,15 +8,6 @@
 <meta name="description" content="Online quiz for variety of topics to enhance your knowledge. Gives a platform to play along with your fiends and families. Create your own quiz or join quiz.">
 <meta name="keywords" content="Online Quiz, Online tests, dequiz, Indian quiz, entertainment, group activity">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-171638931-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-171638931-1');
-</script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -24,7 +15,7 @@
 <script src="/script/dequiz_ws.js"></script>
 <script src="/script/classes.js"></script>
 <link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
-<title>Insert title here</title>
+<title>Join Quiz</title>
 <script type="text/javascript">
 $(document).ready(function(){
 	openParticipantSocket(${deQuizMaster.deqmQuizId},  "${deQuizMaster.dquUserName}");
