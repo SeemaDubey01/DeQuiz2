@@ -12,6 +12,9 @@
 <link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="/script/dequiz.js"></script>
+<script>
+	sessionStorage.setItem("totalMarks", 0);
+</script>
 </head>
 <body>
 <div id="headerpage"></div>
@@ -19,7 +22,7 @@
 <div class="content-window">
 <H1>Join Quiz</H1>
 	<h2>Participants please enter details</h2>
-	Try sample quiz - 102 or 369<p/>
+	
 		<div id="registerform" align="center">
 		<table>
 		<form:form action="userInQuiz" method="get" modelAttribute="deQuizUser">

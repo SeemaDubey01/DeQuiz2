@@ -59,6 +59,7 @@ public class JoinController {
 			deQuizMaster.setDquUserName(deQuizUser.getDquUserName());
 			
 			model.addAttribute("deQuizMaster", deQuizMaster);
+			model.addAttribute("deQuizUser", deQuizUser);
 			return "userInQuiz";
 		}
 	}

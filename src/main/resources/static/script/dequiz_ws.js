@@ -10,6 +10,7 @@ var timerId1, timerId2;
 function openAdminSocket(quizId){
 	var socket = new SockJS('/dequizwebsocket');
 	stompClient = Stomp.over(socket);
+	stompClient.debug = null;
 	thisQuizId = quizId;
 	stompClient.connect({}, function(){
 		stompClient.subscribe('/topic/adminQueue/' + quizId, onMessageReceivedAdminQueue);
@@ -21,26 +22,24 @@ function openParticipantSocket(quizId, userName){
 	
 	var socket = new SockJS('/dequizwebsocket');
 	stompClient = Stomp.over(socket);
+	stompClient.debug = null;
 	stompClient.connect({}, function(){
 		stompClient.subscribe('/topic/participantQueue/' + quizId, onMessageReceivedParticipantQueue);
 		var wsMessage = new WSMessage("NewPlayer", quizId, userName,0);
 		stompClient.send("/app/DeQuiz.NewPlayer/" + quizId, {}, JSON
 				.stringify(wsMessage));
-	});
+	});	
 }
 function onMessageReceivedAdminQueue(payload){
 	var wsMessage = JSON.parse(payload.body);
-	console.log("message received in queue: " + wsMessage.wsMessageType);
 	var participantList = "<p/>";
 		if (wsMessage.wsMessageType === 'NewPlayer' && 
 			wsMessage.wsQuizId == thisQuizId ) {
 			participantList = "<p><b>" + wsMessage.wsUserName + '</b> has joined the quiz </p>';
 			$('#paritipants').append(participantList);
-			console.log("new player joined: " + wsMessage.wsUserName );
 		} else if (wsMessage.wsMessageType === 'ShowQuiz') {
 			initializeAnsCounter(wsMessage.wsAnswer);
 			populateQuestionDiv(wsMessage, "admin");
-			console.log("quiz: " + wsMessage.wsQuizId + " question: " + wsMessage.wsQuestionNo + " received");
 		} else if (wsMessage.wsMessageType == "SendAnswer"){
 			displayStatAns(wsMessage.wsSelectedAns);			
 		} else if (wsMessage.wsMessageType == "ShowResult"){
@@ -56,7 +55,6 @@ function onMessageReceivedParticipantQueue (payload){
 	if (wsMessage.wsMessageType === 'ShowQuiz' &&
 			wsMessage.wsQuizId == thisQuizId ) {
 		populateQuestionDiv(wsMessage,"participant");
-		//console.log("quiz: " + wsMessage.wsQuizId + " question: " + wsMessage.wsQuestionNo + " received");
 	} else if (wsMessage.wsMessageType === 'ShowResult' &&
 			wsMessage.wsQuizId == thisQuizId ) {
 		displayResultTable(wsMessage.wsUserList, wsMessage.wsListSize);
@@ -148,7 +146,6 @@ function displayQuestionDiv(timer, source){
 		timerId2 = setInterval(function(){
 			marks = marks - 1;
 			if (marks < 0) {
-//				console.log("clearing final timer: " + timerId2);
 				clearInterval(timerId2);
 			}
 			else {$("#tmarks").text (marks);	}
@@ -161,8 +158,11 @@ function selectedOption(option, marks){
 		marks = 0;
 		result = "Incorrect";
 	}
+	
+	totalMarks = parseInt(sessionStorage.getItem("totalMarks"),10);
 	totalMarks = totalMarks + parseInt(marks,10);
-	//console.log ("option: " + option + " marks: " + marks + " timerId1: " + timerId1 + " timerId2: " + timerId2  );
+	sessionStorage.setItem("totalMarks", totalMarks);
+	
 	clearInterval(timerId1);
 	clearInterval(timerId2);
 	showResultDiv(result, marks);
@@ -186,7 +186,6 @@ function showResult(){
 			.stringify(wsMessage));
 }
 function displayResultTable(userList, listSize){
-	console.log("displaying result");
 	$("#resultWait").hide();
 	$("#showQuizDiv").hide();
 	clearInterval(timerId1);
@@ -213,6 +212,8 @@ function displayFinalResult(wsUserName){
 	$('#finalResult').html("<H3>Final Result</H3>");
 	$('#finalResult').append("Winner of the Quiz:<H3 Style='color:red'>" + wsUserName +"</H3>");
 	$('#finalResult').append("<table><tr><td><H3><a href='/index.html'>Home</a></H3></td></tr></table>");
+
+	sessionStorage.clear();
 }
 function initializeAnsCounter(wsAnswer){
 	$("#ansA").text(0);

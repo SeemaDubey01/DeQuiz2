@@ -51,12 +51,15 @@ public class WebSocketDAO {
 			//quizMaster.setDeqmAnswer("X");
 			wsQuizMessage = this.populateWSMessage(wsQuizMessage, quizMaster);
 		} else {
+			System.out.println("ending quiz");
 			wsQuizMessage.setWsMessageType("EndQuiz");
 			wsQuizMessage.setWsQuizId(wsQuizId);
 			WSResultMessage wsResultMessage = new WSResultMessage();
 			wsResultMessage = this.getResultList(wsQuizId, 1);
+			System.out.println("result populated");
 			wsQuizMessage.setWsUserName(wsResultMessage.getWsUserList().get(0).getDquUserName());
 			this.setQuizInactive(wsQuizId);
+			System.out.println("quiz inactive now");
 		}
 		return wsQuizMessage;
 	}
@@ -118,7 +121,7 @@ public class WebSocketDAO {
 	}
 
 	public void setQuizActive(Integer deqmQuizId) {
-		Integer wsSrNbr = deqmQuizId * 100 + 1;
+		Integer wsSrNbr = deqmQuizId * 100;
 		DeQuizMaster deQuizMaster = new DeQuizMaster();
 		Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterRepo.findById(wsSrNbr);
 		if (deQuizMasterMap.isPresent()){
@@ -130,12 +133,15 @@ public class WebSocketDAO {
 	
 	public void setQuizInactive(Integer deqmQuizId) {
 		DeQuizMaster deQuizMaster = new DeQuizMaster();
-		Integer wsSrNbr = deqmQuizId * 100 + 1;
+		Integer wsSrNbr = deqmQuizId * 100;
+		System.out.println("setting quiz inactive: " + wsSrNbr);
 		Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterRepo.findById(wsSrNbr);
 		if (deQuizMasterMap.isPresent()){
+			System.out.println("record found: " + wsSrNbr);
 			deQuizMaster = deQuizMasterMap.get();
 			deQuizMaster.setDeqmQuizActive("N");
 			deQuizMasterRepo.save(deQuizMaster);
+			System.out.println("saved-----");
 		}
 	}
 }
