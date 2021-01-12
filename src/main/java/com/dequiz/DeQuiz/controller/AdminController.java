@@ -1,6 +1,5 @@
  package com.dequiz.DeQuiz.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -12,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.dequiz.DeQuiz.dto.DeQuizLogin;
 import com.dequiz.DeQuiz.dto.DeQuizMaster;
@@ -32,7 +30,6 @@ public class AdminController {
 	
 	@GetMapping("/signUp")
 	private String showSignUpForm(Model model) {
-		System.out.println("Inside the get method--rtertertrt-");
 		DeQuizLogin deQuizLogin = new DeQuizLogin();
 		model.addAttribute("deQuizLogin", deQuizLogin);
 		return "signUp";
@@ -40,11 +37,9 @@ public class AdminController {
 	
 	@PostMapping("/saveAdmin")
 	public String saveAdmin(@Valid @ModelAttribute("deQuizLogin") DeQuizLogin deQuizLoginPara, BindingResult bindingResult, Model model) {
-		System.out.println("saveAdmin: user is: " + deQuizLoginPara);
 		if(deQuizLoginPara.getDqlUserId()!=null) {
 			DeQuizLogin deQuizLogin = getAdmin(deQuizLoginPara.getDqlUserId());;
 			if (deQuizLogin!=null && deQuizLogin.getDqlUserId().equalsIgnoreCase(deQuizLoginPara.getDqlUserId())) {
-				System.out.println("userid exists");
 				bindingResult.addError(new FieldError("deQuizLogin", "dqlUserId", "UserId already exists please select a new userId"));
 			}
 		}
@@ -75,7 +70,6 @@ public class AdminController {
 	 
 	/*
 	 * @GetMapping("/forGotPassword") private String forgotPassword(Model model) {
-	 * System.out.println("Inside the get method--rtertertrt-"); DeQuizLogin
 	 * deQuizLogin = new DeQuizLogin(); model.addAttribute("deQuizLogin",
 	 * deQuizLogin); return "forGotPassword"; }
 	 */
@@ -111,13 +105,13 @@ public class AdminController {
 	 * }
 	 * 
 	 * }
-	 */
+	 
 		
 		private List<DeQuizMaster> getExistingQuizes(String userId){
 			List<DeQuizMaster> qMlist = deQuizMasterDBRepo.findByDqlUserId(userId);
 			  return qMlist;
 		}
-	 
+	 */
 		 
 
 }

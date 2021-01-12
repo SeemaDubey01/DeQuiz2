@@ -34,54 +34,37 @@ function clickcancel(){
 	 $("#quizdivEdit").hide();
 	 $("#save").hide();
 	 $("#cancel").hide();
-	 $("#cancel").show();
-	 $('#quizform').submit();
+	// $('#quizform').submit();
 }
 
 function clickprevious(){
-	$('#editType').attr('value','previous');
-	$('#quizform').submit();
-	
+	if(parseInt($('#deqmQuestionNo').val()) > 1){
+		$('#editType').attr('value','previous');
+		$('#quizform').submit();
+	}	
 }
 
 function clicksave(){
 	$('#editType').attr('value','save');
-	$('#quizform').submit();
-	$("#quizdiv").show();
-	 $("#questiondiv").show();
-	 $("#update").show();
-	 $("#questiondivEdit").hide();
-	 $("#quizdivEdit").hide();
-	 $("#save").hide();
-	 $("#cancel").hide();
-	 $("#previous").show();
-	
+	$('#quizform').submit();	
 }
 
 function clicknext(){
 	$('#editType').attr('value','next');
 	$('#quizform').submit();
-	 $("#previous").show();
-	
-	
 }
 </script>
-<title>DeQuiz: Start Quiz</title>
+<title>DeQuiz: Edit Quiz</title>
 </head>
 <body>
-<div class="wrapper">
-<!--  page header containing heading and menu -->
-<div align="center">
-  <span ><img src="images/dqlogo.jpg" alt="De Quiz" name="DeQuizLogo" width="80" height="80" id="DeQuizLogo" />
-  </span> <span class="header">De Quiz</span>
-</div>
+<div id="headerpage"></div>
 <!--  end of page header -->
 <!--  content block -->
 <div class="content-window">
-<h1>Start Quiz</h1>
+<h1>Edit Quiz</h1>
 <div align="center" style="font-size:min(5vw,40);">
 <!--  question number and question -->
-<form:form id="quizform" action="/getNextQuestioinEdit"  method="post" modelAttribute="deQuizMaster">
+<form:form id="quizform" action="getNextQuestioinEdit"  method="post" modelAttribute="deQuizMaster">
   <div id = "questiondiv">${deQuizMaster.deqmQuestionNo}.  ${deQuizMaster.deqmQuestion}</div>
   <div id = "questiondivEdit" hidden="true">${deQuizMaster.deqmQuestionNo}. 
   <form:input path="deqmQuestion" value = "${deQuizMaster.deqmQuestion}" maxlength="90px"/></div>
@@ -102,19 +85,26 @@ function clicknext(){
   <p id="optionD">
   <form:label path="deqmOption_d">${deQuizMaster.deqmOption_d}</form:label>
   </p>
+  <p id="Answer">
+  Answer:
+  <form:label path="deqmAnswer">${deQuizMaster.deqmAnswer}</form:label>
+  </p>
   </div><p/>
     <div id="quizdivEdit" hidden="true" >
-  <p id="optionA">
+  <p id="optionA">a:
   <form:input path="deqmOption_a" value ="${deQuizMaster.deqmOption_a}"/>
   </p>
-  <p id="optionB">
+  <p id="optionB">b:
 <form:input path="deqmOption_b" value ="${deQuizMaster.deqmOption_b}"/>
   </p>
-  <p id="optionC">
+  <p id="optionC">c:
 <form:input path="deqmOption_c" value ="${deQuizMaster.deqmOption_c}"/>
   </p>
-  <p id="optionD">
+  <p id="optionD">d:
 <form:input path="deqmOption_d" value ="${deQuizMaster.deqmOption_d}"/>
+  </p>
+  <p id="Answer">Answer:
+<form:input path="deqmAnswer" value ="${deQuizMaster.deqmAnswer}"/>
   </p>
   </div><p/>
     <button id = "previous"  name="previous" type="button" value="previous" onclick="clickprevious()">Previous Question</button>
@@ -130,12 +120,7 @@ function clicknext(){
 </div>
 <!--  End of content block -->
 <!--  Footer -->
-<div class="footer">
-&copy; DeQuiz India 
-</div>
+<div id="footerpage"></div>
 <!--  end of Footer -->
-
-</div>
-
 </body>
 </html>

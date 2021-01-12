@@ -24,7 +24,6 @@ public class LoginValidator implements ConstraintValidator<LoginIdConstraint, Ob
 	    public boolean isValid(Object value,
 	      ConstraintValidatorContext cxt) {
 	    	
-	    	System.out.println("print the object-----user id is--->>>>>>>"+((DeQuizLogin)value).getDqlUserId());
 	    	return value != null && ((DeQuizLogin)value).getDqlUserId()!=null && getAdmin(((DeQuizLogin)value).getDqlUserId())!=null
 	    			&& ((DeQuizLogin)value).getDqlPassword()!=null && getAdmin(((DeQuizLogin)value).getDqlUserId()).getDqlPassword()!=null
 	    			&& ((DeQuizLogin)value).getDqlPassword().equals(getAdmin(((DeQuizLogin)value).getDqlUserId()).getDqlPassword());
@@ -32,11 +31,9 @@ public class LoginValidator implements ConstraintValidator<LoginIdConstraint, Ob
 	
 	  private DeQuizLogin getAdmin(String userIdfield){
 
-	  System.out.println("Inside getAdmin"); 
 	  Optional<DeQuizLogin> dequizLoginMap =logindbRepo.findById(userIdfield); 
 	  if(dequizLoginMap.isPresent()) { 
 		  quizLogin = dequizLoginMap.get();
-	  System.out.println("Inside getAdmin getting mailid"+quizLogin.getDqlEmail());
 	  } return quizLogin;
 	  
 	  }

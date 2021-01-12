@@ -11,7 +11,7 @@
 <link href="/CSS/dequiz.css" rel="stylesheet" type="text/css" />
  
 <script type="text/javascript">
-
+/*
 $(document).ready(function(){
   $("#quizdiv").hide();
   $("#timertable").hide();
@@ -31,7 +31,7 @@ $(document).ready(function(){
 		$("#selectedAnswer").attr("value","d");
 		$("#quizform").submit();
   });
-});
+});*/
 </script>
 <title>DeQuiz: Start Quiz</title>
 </head>
@@ -73,7 +73,7 @@ $(document).ready(function(){
   <form:label path="deqmOption_d">${deQuizMaster.deqmOption_d}</form:label>
   </p>
   <p id="Answer">
-  Answer
+  Answer:
   <form:label path="deqmAnswer">${deQuizMaster.deqmAnswer}</form:label>
   </p>
   </div><p/>

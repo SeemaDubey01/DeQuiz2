@@ -17,18 +17,15 @@ public class WebSocketListener {
 
 	    @EventListener
 	    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-	        System.out.println("Received a new web socket connection");
 	    }
 
 
 	    @EventListener
 	    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
 	        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-	        System.out.println("socket disconnected: " + event.getSource());
 
 	        Integer quizId = (Integer) headerAccessor.getSessionAttributes().get("wsQuizId");
 	        if(quizId != null) {
-	        	System.out.println("session disconnected: quizId: " + quizId + " event: " + event.getMessage());
 /*	            DQChatMessage chatMessage = new DQChatMessage();
 	            chatMessage.setType("Leave");
 	            chatMessage.setSender(username);

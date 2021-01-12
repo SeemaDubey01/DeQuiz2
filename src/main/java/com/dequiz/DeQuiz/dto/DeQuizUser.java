@@ -103,7 +103,6 @@ public class DeQuizUser  {
 	}
 
 	public void setDquCorrectAns(String dquCorrectAns) {
-		System.out.println("setcorrectans: " + dquCorrectAns);
 		this.dquCorrectAns = dquCorrectAns;
 	}
 

@@ -1,16 +1,13 @@
 package com.dequiz.DeQuiz.controller;
 
 import java.util.Optional;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import com.dequiz.DeQuiz.Websocket.WebSocketDAO;
 import com.dequiz.DeQuiz.dto.DeQuizMaster;
 import com.dequiz.DeQuiz.dto.DeQuizUser;
@@ -37,7 +34,6 @@ public class JoinController {
 		if (bindingResult.hasErrors()) {
 			return "joinQuiz";
 		} else {
-			System.out.println("user received: " +deQuizUser.getDquUserName());
 			// save user details in table
 			Optional<DeQuizUser> deQuizUserMap = deQuizUserRepo.findByDquQuizIdAndDquUserName(deQuizUser.getDquQuizId(), deQuizUser.getDquUserName());
 			if (deQuizUserMap.isEmpty()) {
@@ -47,7 +43,6 @@ public class JoinController {
 				deQuizUser.setDquTotalMarks(0);
 				deQuizUser.setDquQuestionNo(0);
 				deQuizUserRepo.save(deQuizUser);
-				System.out.println("writing user name");
 			}
 			else {
 				deQuizUser = deQuizUserMap.get();

@@ -45,7 +45,6 @@ public class QuizMasterController {
 	
 	@GetMapping("/login")
 	public String loginPage() {
-		System.out.println("going to login page");
 		return("adminLogin");
 	}
 	
@@ -132,7 +131,6 @@ public class QuizMasterController {
 			deQuizMaster.setDeqmQuizId(deQuizLogin.getDeqmQuizId());
 			wsMessageDAO.setQuizActive(deQuizMaster.getDeqmQuizId());
 			model.addAttribute("deQuizMaster", deQuizMaster);
-			System.out.println("Admin start quiz");
 			returntype = "adminInQuiz";
 		}
 		if(operationType.equalsIgnoreCase("delete")) {
@@ -172,7 +170,6 @@ public class QuizMasterController {
 	
 	@PostMapping("/createquiz")
 	private String CrateQuiz( @ModelAttribute("quizmaster") DeQuizMaster quizmaster, @Valid Model model) {
-		System.out.println("The value of question number coming as---"+quizmaster.getDeqmQuestionNo());
 		if (quizmaster.getDeqmQuestionNo() == null ) {
 			quizmaster.setDeqmQuestionNo(1);
 		} 
@@ -227,8 +224,6 @@ public class QuizMasterController {
 		return "editquiz";
 		}
 		if(deQuizMaster.getEditType().equalsIgnoreCase("save")) {
-			System.out.println("The id of the question is----"+deQuizMaster.getDeqmSrNbr());
-			System.out.println("Values inside object"+deQuizMaster.getDeqmOption_c()+" And option d is"+deQuizMaster.getDeqmOption_d());
 			deQuizMasterDBRepo.save(deQuizMaster);
 			model.addAttribute("deQuizMaster", deQuizMaster);
 			return "editquiz";

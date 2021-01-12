@@ -25,7 +25,6 @@ public class WebSocketDAO {
 		wsQuizMessage.setWsMessageType("NewPlayer");
 		wsQuizMessage.setWsQuizId(wsQuizId);
 		wsQuizMessage.setWsUserName(wsUserName);
-		System.out.println("Simpmessage Sending message: quizId: " + wsQuizId + " joined-" + wsUserName);
 	}
 
 	public void initializeParticipantTable(WSQuizMessage wsQuizMessage) {
@@ -51,15 +50,12 @@ public class WebSocketDAO {
 			//quizMaster.setDeqmAnswer("X");
 			wsQuizMessage = this.populateWSMessage(wsQuizMessage, quizMaster);
 		} else {
-			System.out.println("ending quiz");
 			wsQuizMessage.setWsMessageType("EndQuiz");
 			wsQuizMessage.setWsQuizId(wsQuizId);
 			WSResultMessage wsResultMessage = new WSResultMessage();
 			wsResultMessage = this.getResultList(wsQuizId, 1);
-			System.out.println("result populated");
 			wsQuizMessage.setWsUserName(wsResultMessage.getWsUserList().get(0).getDquUserName());
 			this.setQuizInactive(wsQuizId);
-			System.out.println("quiz inactive now");
 		}
 		return wsQuizMessage;
 	}
@@ -90,7 +86,6 @@ public class WebSocketDAO {
 		}
 		deQuizUser = deQuizUserMap.get();
 		if (!deQuizUser.getDquQuizId().equals(wsAnsMessage.getWsQuizId())) {
-			System.out.println("msg: " + wsAnsMessage.getWsQuizId() + " table:" + deQuizUser.getDquQuizId());
 			return false;
 		}
 		deQuizUser.setDquMarks(wsAnsMessage.getWsMarks());
@@ -134,14 +129,11 @@ public class WebSocketDAO {
 	public void setQuizInactive(Integer deqmQuizId) {
 		DeQuizMaster deQuizMaster = new DeQuizMaster();
 		Integer wsSrNbr = deqmQuizId * 100;
-		System.out.println("setting quiz inactive: " + wsSrNbr);
 		Optional<DeQuizMaster> deQuizMasterMap = deQuizMasterRepo.findById(wsSrNbr);
 		if (deQuizMasterMap.isPresent()){
-			System.out.println("record found: " + wsSrNbr);
 			deQuizMaster = deQuizMasterMap.get();
 			deQuizMaster.setDeqmQuizActive("N");
 			deQuizMasterRepo.save(deQuizMaster);
-			System.out.println("saved-----");
 		}
 	}
 }
